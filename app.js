@@ -4,7 +4,9 @@ const sumElement = document.getElementById("sum-el");
 const cardElement = document.getElementById("card-el");
 const newCard = document.getElementById("newCard-button");
 const identifierElement = document.getElementById("identifier-el");
-console.log(identifierElement);
+const dealerElement = document.getElementById("dealer-el");
+const finishElement = document.getElementById("finish-button");
+const resetElement = document.getElementById("reset-button");
 
 let player = {
   name: "mahziar",
@@ -14,14 +16,18 @@ let player = {
 identifierElement.textContent = player.name + ": " + player.chips;
 
 let cards = [];
+let dealerCards = [];
 
 let sum = 0;
+let dealerSum = 0;
 let hasBalckJack = false;
 let isAlive = false;
 let message = "";
 
 startBtn.onclick = startGame;
 newCard.onclick = drawCard;
+finishElement.onclick = finishGame;
+resetElement.onclick = reset;
 
 function getRandomValue() {
   let result = Math.floor(Math.random() * 13) + 1;
@@ -35,8 +41,17 @@ function getRandomValue() {
 }
 
 function startGame() {
+  if (cards.length >= 2) {
+    return;
+  }
   let firstCard = getRandomValue();
   let secondCard = getRandomValue();
+  let firstDealerCard = getRandomValue();
+  let secondDealerCard = getRandomValue();
+  dealerSum = firstDealerCard + secondDealerCard;
+  dealerCards.push(firstDealerCard, secondDealerCard);
+  dealerElement.textContent += firstDealerCard;
+  console.log(dealerSum);
   cards.push(firstCard, secondCard);
   sum = firstCard + secondCard;
   isAlive = true;
@@ -71,4 +86,24 @@ function drawCard() {
     sum += nextCard;
     rendertGame();
   }
+}
+
+function finishGame() {
+  dealerElement.textContent = "Dealer: ";
+  for (let i = 0; i < dealerCards.length; i++) {
+    dealerElement.textContent += dealerCards[i] + " ";
+  }
+  if (sum > dealerSum) {
+    message = "player win";
+  } else if (sum < dealerSum) {
+    message = "dealer win";
+  } else if (sum == dealerSum) {
+    message = "try again";
+  }
+  messageElement.textContent = message;
+  isAlive = false;
+}
+
+function reset() {
+  location.reload();
 }

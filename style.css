@@ -27,7 +27,7 @@ p{
     font-size: 1.4em;
 }
 
-#start-button , #newCard-button{
+#start-button , #newCard-button , #finish-button , #reset-button {
     color: #016f32;
     text-align: center;
     width: 150px;
